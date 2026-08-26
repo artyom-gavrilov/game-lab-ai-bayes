@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Парадокс Монти Холла (N=10)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            ink: "#0b1020",
+            panel: "#141b33",
+            gold: "#f5b942"
+          },
+          fontFamily: {
+            sans: ["Manrope", "system-ui", "sans-serif"]
+          }
+        }
+      }
+    };
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body class="bg-ink text-slate-100 min-h-screen font-sans antialiased">
+  <div class="pointer-events-none fixed inset-0 bg-grid"></div>
+
+  <main class="relative mx-auto flex min-h-screen max-w-3xl flex-col px-4 py-6 sm:px-6 sm:py-8">
+    <header class="mb-6 text-center sm:mb-8">
+      <p class="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-gold/80">Научный эксперимент</p>
+      <h1 id="main-title" class="text-2xl font-extrabold leading-tight sm:text-3xl">
+        Найдите приз за одной из 10 дверей
+      </h1>
+      <p id="main-subtitle" class="mt-2 text-sm text-slate-400 sm:text-base">
+        Выберите одну дверь. Затем ведущий откроет пустые.
+      </p>
+      <div id="dev-bar" class="dev-bar hidden">
+        <span id="dev-label" class="dev-label"></span>
+        <button id="btn-restart" type="button" class="btn-restart">Новая игра</button>
+      </div>
+    </header>
+
+    <section id="step-play" class="flex flex-1 flex-col">
+      <div id="door-grid" class="door-grid" aria-label="Двери 1–10"></div>
+
+      <aside id="ai-card" class="host-card mt-6 hidden" aria-live="polite">
+        <img class="host-portrait" src="img/host.jpg" alt="Ведущий" width="96" height="96" />
+        <div class="host-speech">
+          <p class="host-name">Ведущий</p>
+          <p id="ai-text" class="host-line"></p>
+        </div>
+      </aside>
+
+    </section>
+
+    <section id="step-result" class="hidden flex-1 flex-col items-center text-center">
+      <div id="result-icon" class="result-icon mb-5"></div>
+      <h2 id="result-title" class="text-2xl font-extrabold sm:text-3xl"></h2>
+      <p id="result-text" class="mt-2 max-w-md text-sm text-slate-400 sm:text-base"></p>
+
+      <div class="code-card mt-8 w-full max-w-sm">
+        <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">Проверочный код</p>
+        <p id="completion-code" class="mt-2 font-mono text-3xl font-extrabold tracking-widest text-gold">MH-000000</p>
+        <button id="btn-copy" type="button" class="btn-copy mt-4">Скопировать код</button>
+        <p id="copy-status" class="mt-2 min-h-5 text-xs text-emerald-400"></p>
+      </div>
+
+      <p class="mt-6 max-w-sm text-xs leading-relaxed text-slate-500">
+        Вставьте этот код на крауд-платформе, чтобы подтвердить участие. Повторное прохождение недоступно.
+      </p>
+    </section>
+  </main>
+
+  <script src="js/config.js"></script>
+  <script src="js/game.js"></script>
+</body>
+</html>

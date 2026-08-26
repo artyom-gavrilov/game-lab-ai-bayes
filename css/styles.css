@@ -1,0 +1,329 @@
+:root {
+  --door-closed: linear-gradient(160deg, #3d4fd6 0%, #6d3ad6 100%);
+  --door-selected: linear-gradient(160deg, #f5b942 0%, #e07a1a 100%);
+  --door-alt: linear-gradient(160deg, #1ea896 0%, #127a6e 100%);
+}
+
+.bg-grid {
+  background-image:
+    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(99, 102, 241, 0.28), transparent 55%),
+    radial-gradient(ellipse 40% 30% at 90% 80%, rgba(245, 185, 66, 0.08), transparent 50%);
+}
+
+.door-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+  perspective: 1100px;
+}
+
+@media (min-width: 640px) {
+  .door-grid {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 0.9rem;
+  }
+}
+
+.door {
+  display: block;
+  width: 100%;
+  position: relative;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #fff;
+  cursor: pointer;
+  perspective: 900px;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.door:focus-visible {
+  outline: 3px solid #f5b942;
+  outline-offset: 3px;
+}
+
+.door-inner {
+  display: block;
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  min-height: 7.5rem;
+  transform-style: preserve-3d;
+  transition: transform 0.78s cubic-bezier(0.22, 0.7, 0.2, 1);
+}
+
+.door:not(:disabled):not(.is-flipped):hover .door-inner {
+  transform: translateY(-4px) scale(1.03);
+}
+
+.door:not(:disabled):not(.is-flipped):active .door-inner {
+  transform: translateY(1px) scale(0.98);
+}
+
+.door.is-flipped .door-inner {
+  transform: rotateY(180deg);
+}
+
+.door-face {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 1rem;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.22),
+    0 10px 24px rgba(0, 0, 0, 0.28);
+}
+
+.door-front {
+  background: var(--door-closed);
+  transform: rotateY(0deg);
+}
+
+.door-front::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.2), transparent 42%);
+  pointer-events: none;
+}
+
+.door-back {
+  background: #2a3148;
+  color: #8b93ab;
+  transform: rotateY(180deg);
+}
+
+.door-back.is-prize-face {
+  background: linear-gradient(160deg, #f5b942 0%, #ffd56a 55%, #e07a1a 100%);
+  color: #1a1204;
+  animation: prize-glow 1.2s ease-in-out infinite alternate;
+}
+
+.door-number {
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+.door-badge {
+  position: absolute;
+  left: 50%;
+  bottom: 0.7rem;
+  transform: translateX(-50%);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.85;
+}
+
+.door-badge:empty {
+  display: none;
+}
+
+.door.is-selected .door-front {
+  background: var(--door-selected);
+  color: #1a1204;
+}
+
+.door.is-alt .door-front {
+  background: var(--door-alt);
+}
+
+.door.is-flipped,
+.door.is-empty {
+  cursor: default;
+  pointer-events: none;
+}
+
+.empty-mark {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.door:disabled {
+  cursor: default;
+}
+
+@keyframes prize-glow {
+  from {
+    box-shadow: 0 0 0 0 rgba(245, 185, 66, 0.15), 0 12px 28px rgba(245, 185, 66, 0.25);
+  }
+  to {
+    box-shadow: 0 0 28px 6px rgba(245, 185, 66, 0.35), 0 12px 28px rgba(245, 185, 66, 0.35);
+  }
+}
+
+.host-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.9rem;
+  border: 1px solid rgba(245, 185, 66, 0.28);
+  background: linear-gradient(180deg, rgba(28, 22, 14, 0.96), rgba(16, 21, 40, 0.96));
+  border-radius: 1.15rem;
+  padding: 0.85rem 1rem 0.95rem;
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.32);
+  animation: slide-up 0.45s cubic-bezier(0.22, 0.7, 0.2, 1);
+}
+
+.host-portrait {
+  width: 4.5rem;
+  height: 4.5rem;
+  flex-shrink: 0;
+  border-radius: 999px;
+  object-fit: cover;
+  object-position: center top;
+  border: 2px solid #f5b942;
+  box-shadow: 0 0 0 3px rgba(245, 185, 66, 0.18), 0 8px 18px rgba(0, 0, 0, 0.35);
+}
+
+.host-speech {
+  position: relative;
+  min-width: 0;
+  flex: 1;
+  padding: 0.15rem 0 0;
+}
+
+.host-name {
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #f5b942;
+}
+
+.host-line {
+  margin-top: 0.3rem;
+  font-size: 0.95rem;
+  line-height: 1.45;
+  color: #e8edff;
+}
+
+@media (min-width: 640px) {
+  .host-portrait {
+    width: 5.25rem;
+    height: 5.25rem;
+  }
+
+  .host-line {
+    font-size: 1.02rem;
+  }
+}
+
+.btn-copy {
+  width: 100%;
+  min-height: 2.75rem;
+  border: 0;
+  border-radius: 0.75rem;
+  background: #f5b942;
+  color: #1a1204;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.btn-copy:hover {
+  filter: brightness(1.06);
+}
+
+.code-card {
+  border: 1px solid rgba(245, 185, 66, 0.25);
+  background: #141b33;
+  border-radius: 1.1rem;
+  padding: 1.25rem 1.1rem 1.1rem;
+}
+
+.result-icon {
+  width: 7.5rem;
+  height: 7.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 1.5rem;
+}
+
+.result-icon.is-win {
+  background: linear-gradient(160deg, #f5b942, #e07a1a);
+  color: #1a1204;
+  animation: prize-glow 1.2s ease-in-out infinite alternate;
+}
+
+.result-icon.is-lose {
+  background: #1d243c;
+  color: #8b93ab;
+}
+
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hidden {
+  display: none !important;
+}
+
+.icon-md {
+  width: 2rem;
+  height: 2rem;
+}
+
+.icon-lg {
+  width: 3.5rem;
+  height: 3.5rem;
+}
+
+.dev-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+
+.dev-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #f5b942;
+}
+
+.btn-restart {
+  min-height: 2.25rem;
+  border: 1px solid rgba(245, 185, 66, 0.4);
+  border-radius: 0.65rem;
+  padding: 0.4rem 0.85rem;
+  background: rgba(245, 185, 66, 0.12);
+  color: #f5b942;
+  font-size: 0.8rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.btn-restart:hover {
+  filter: brightness(1.1);
+}
+
+.door.is-recommended .door-front {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.22),
+    0 0 0 3px rgba(245, 185, 66, 0.62),
+    0 10px 24px rgba(0, 0, 0, 0.28);
+}
