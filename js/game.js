@@ -4,7 +4,7 @@
   const STORAGE_KEY = "mh_experiment_completed";
   const GROUPS = ["Group_A", "Group_B", "Group_C", "Group_D"];
   const DOOR_COUNT = 10;
-  const OPEN_COUNT = 5;
+  const OPEN_COUNT = 8;
 
   const params = new URLSearchParams(window.location.search);
   const isDev = params.get("dev") === "1";
@@ -121,18 +121,20 @@
     const initial = state.initialDoor;
     const rec = state.recommendedDoor;
     if (state.groupId === "Group_B") {
-      return "Мой алгоритм считает, что шансы между 5 оставшимися дверями равны и составляют 20% на каждую. Менять выбор нет смысла.";
+      return "Мой алгоритм показывает, что шансы равны 50/50. Менять или оставлять дверь — математически не имеет значения.";
     }
     if (state.groupId === "Group_C") {
-      return "Алгоритм советует сменить выбор и открыть Дверь №" + rec + ".";
+      return "Алгоритм рекомендует изменить выбор и открыть Дверь №" + rec + ".";
     }
     if (state.groupId === "Group_D") {
       return (
-        "Рекомендую сменить выбор на Дверь №" +
+        "Рекомендую сменить на Дверь №" +
         rec +
         ". Математическое обоснование: шанс вашей Двери №" +
         initial +
-        " остается 10%, а выбывшие 5 дверей передали свою вероятность 4 оставшимся — шанс каждой из них вырос до 22.5%."
+        " всего 10%, а суммарная вероятность (90%) отфильтрованных ведущим дверей перешла на Дверь №" +
+        rec +
+        "."
       );
     }
     return "";
@@ -301,8 +303,8 @@
     const selected = doorEl(state.initialDoor);
     selected.disabled = false;
 
-    els.title.textContent = "Остались 5 дверей";
-    els.subtitle.textContent = "Нажмите на одну из закрытых дверей, чтобы открыть её.";
+    els.title.textContent = "Остались 2 двери";
+    els.subtitle.textContent = "Ведущий открыл 8 пустых. Нажмите на одну из закрытых дверей.";
 
     els.aiCard.classList.add("hidden");
     els.aiText.textContent = "";
