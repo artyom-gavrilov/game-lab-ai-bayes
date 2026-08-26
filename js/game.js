@@ -289,12 +289,13 @@
     if (state.finished) return;
 
     const showAdvice = state.groupId !== "Group_A";
+    const markRecommended = state.groupId === "Group_C" || state.groupId === "Group_D";
 
     state.altDoors.forEach(function (d) {
       const el = doorEl(d);
       el.classList.add("is-alt");
       el.disabled = false;
-      if (showAdvice && d === state.recommendedDoor) {
+      if (markRecommended && d === state.recommendedDoor) {
         el.classList.add("is-recommended");
         setBadge(el, "Совет");
       }
